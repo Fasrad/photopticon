@@ -1,0 +1,54 @@
+#!/usr/bin/perl -w
+
+# usage: photopticon <configfile> <imagefile(s)>
+
+# photopticon is designed to batch-process digital images of complete
+# contact-sheets (or images of negative-pages sitting on a light-box).
+# It will pre-process the images, then crop out each individual frame 
+# (e.g) 36 frames from a roll of 35mm film) and save the resulting files 
+# in a directory for browsing, reference, or archiving purposes. 
+
+# limitations: 
+# Photopticon uses "dead reckoning" to crop out images. No machine vision.
+# When processing multiple images with the same config file, each image 
+# must be similar. This means you can't move the tripod between images 
+# and all images must use the same PrintFile page format or contact printer.
+# Negative strips must be posititioned the same in each PrintFile slot or 
+# contact printer.
+
+# photopticon requires a correct config file. Refer to example 
+# config file example.yml to get started 
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public
+# License
+# along with this program.  If not, see
+# <http://www.gnu.org/licenses/>.
+# 
+
+#use YAML::XS 'Loadfile';
+use YAML::XS;
+
+# read configfile
+
+$config=LoadFile('example.yml');
+
+print $config->{monochrome};
+
+
+
+# process images 
+    # apply scaling (speed later ops)
+    # apply monochrome (speed later ops)
+    # pre-rotate
+    # pre-crop
+    # multi-crop
