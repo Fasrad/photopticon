@@ -11,13 +11,13 @@
 
 ---
 # pre-crop operations
-pre_rotation: 0   # Slow and lossy. Scan straighter to avoid having to rotate. Degrees.
-pre_scale: 100    # Applied to composite image before cropping. Percent. 
+pre_rotation: 10  # Slow, lossy. Scan straighter to avoid having to rotate. Degrees clockwise. 
+pre_scale: 50    # Applied to composite image before cropping. Percent. 
 monochrome: 1     # Color photography is never going to catch on anyway. Boolean.
-top_crop: 0       # in pixels
-left_crop: 0      # in pixels
-bottom_crop: 0    # in pixels
-right_crop: 0     # in pixels
+top_crop: 1       # in pixels
+left_crop: 1      # in pixels
+bottom_crop: 2    # in pixels
+right_crop: 2     # in pixels
 images_per_row: 5 # in pixels. Photopticon uses a regular grid. 
 rows: 7           # in pixels. if your images have inconsistent spacing, sorry.
 slop: 0           # in pixels. slop allows overlap between images. Use a lot to be safe. 
