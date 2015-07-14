@@ -1,0 +1,29 @@
+# This is an example config file for photopticon. It uses these parameters. 
+# typically you want to start tuning these parameters from top to bottom. 
+# generally you will be able to use the same config file for any number of 
+# composite images as long as your needs don't change. You will need to create 
+# different config files for each negative-page or contact-printer format.
+# If you use a camera to "scan" the contact prints, you will need to use a 
+# different config file for images gathered in different sessions, unless you can 
+# get the tripod aligned exactly the same every time. 
+
+# boolean options enter 1 for yes/true and 0 for false/no
+
+---
+# pre-crop operations
+pre_rotation: 0   # Slow and lossy. Scan straighter to avoid having to rotate. Degrees.
+pre_scale: 100    # Applied to composite image before cropping. Percent. 
+monochrome: 1     # Color photography is never going to catch on anyway. Boolean.
+top_crop: 0       # in pixels
+left_crop: 0      # in pixels
+bottom_crop: 0    # in pixels
+right_crop: 0     # in pixels
+images_per_row: 5 # in pixels. Photopticon uses a regular grid. 
+rows: 7           # in pixels. if your images have inconsistent spacing, sorry.
+slop: 0           # in pixels. slop allows overlap between images. Use a lot to be safe. 
+
+# post-crop operations done to individual images
+normalize: 1    # Stretch histogram after cropping. Typically good. Boolean.
+sharpen: 1      # unsharp mask. Boolean.
+annotate: 1     # imprint file, image number onto the image. Boolean.
+

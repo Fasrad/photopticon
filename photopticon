@@ -10,11 +10,12 @@
 
 # limitations: 
 # Photopticon uses "dead reckoning" to crop out images. No machine vision.
-# When processing multiple images with the same config file, each image 
-# must be similar. This means you can't move the tripod between images 
+# When processing multiple images with the same config file, each (composite) 
+# image must be similar. This means you can't move the tripod between images 
 # and all images must use the same PrintFile page format or contact printer.
 # Negative strips must be posititioned the same in each PrintFile slot or 
-# contact printer.
+# contact printer. A configurable "slop" factor crops "extra" pixels around 
+# each image to be "safe". 
 
 # photopticon requires a correct config file. Refer to example 
 # config file example.yml to get started 
@@ -35,15 +36,16 @@
 # <http://www.gnu.org/licenses/>.
 # 
 
-#use YAML::XS 'Loadfile';
-use YAML::XS;
+use YAML::XS 'LoadFile';
+use Data::Dumper;
+use feature 'say';
 
 # read configfile
-
-$config=LoadFile('example.yml');
-
-print $config->{monochrome};
-
+$cfg=$ARGV[0] // die "USAGE: photopticon <config file> <image file(s)>\n";
+die "expecting a config file ending with .yml or .yaml." unless $cfg=~/ya?ml$/;
+$config=LoadFile("$cfg") || die "problem with config file...bad config file syntax?";
+say "reading config file $cfg with options:";
+say Dumper($config);
 
 
 # process images 
