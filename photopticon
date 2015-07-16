@@ -9,11 +9,11 @@
 # in a directory for browsing, reference, or archiving purposes. 
 
 # limitations: 
-# Photopticon uses "dead reckoning" to crop out images. No machine vision.
+# Photopticon uses "dead reckoning" to crop out images. No machine vision or edge detection..
 # When processing multiple images with the same config file, each (composite) 
 # image must be similar. This means you can't move the tripod between images 
-# and all images must use the same PrintFile page format or contact printer.
-# Negative strips must be posititioned the same in each PrintFile slot or 
+# and all images in a batch must use the same PrintFile page format or contact printer.
+# Negative strips must be posititioned roughly the same in each PrintFile slot or 
 # contact printer. A configurable "slop" factor crops "extra" pixels around 
 # each image to be "safe". 
 
@@ -62,7 +62,7 @@ $left_crop      = $config->{left_crop} // print "undefined option:left_crop\n";
 
 splice(@ARGV,0,1); #shift config file name off 
 
-foreach $infile (@ARGV){
+foreach $infile (@ARGV){         # this does not handle filenames with spaces. 
     say "processing $infile";
 
     # identify infile. Example output of identify:
@@ -93,6 +93,15 @@ foreach $infile (@ARGV){
     #use a perl loop here to "manually" calculate offsets and crop out images, or take
     #advantage of mogrify bulk-crop easiness and then process the resulting
     #small images individually. Unsure which is better at this time.
+
+    #mogrify allows this:
+    convert $infile +gravity -crop XxY $infile\_%d.jpg 
+    #requires calculating X and Y; will not evenly divide most of the time
+
+    # N by M images auto-crop. Is adaptive when not evenly divisible. 
+    convert rose: -crop NxM+20+20@  +repage  +adjoin  rose_2x2+20+20@_%d.gif
+    # the +20 is overlap.  Can by negative. I think this is what we want. 
+
 }
 
 say "done. Check output.";
