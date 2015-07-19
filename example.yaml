@@ -18,9 +18,10 @@ top_crop: 1       # in pixels
 left_crop: 1      # in pixels
 bottom_crop: 2    # in pixels
 right_crop: 2     # in pixels
-images_per_row: 5 # in pixels. Photopticon uses a regular grid. 
-rows: 7           # in pixels. if your images have inconsistent spacing, sorry.
-slop: 0           # in pixels. slop allows overlap between images. Use a lot to be safe. 
+columns: 5        # in images
+rows: 7           # in images. if your images have inconsistent spacing, sorry.
+xslop: +0         # in pixels. The "+" and "-" symbols are mandatory! This is a string. 
+yslop: +0         # in pixels. The "+" and "-" symbols are mandatory! This is a string. 
 
 # post-crop operations done to individual images
 normalize: 1    # Stretch histogram after cropping. Typically good. Boolean.

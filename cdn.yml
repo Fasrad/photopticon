@@ -1,0 +1,45 @@
+# This is an example config file for photopticon. It uses these parameters. 
+# typically you want to start tuning these parameters from top to bottom. 
+# generally you will be able to use the same config file for any number of 
+# composite images as long as your needs don't change. You will need to create 
+# different config files for each negative-page or contact-printer format.
+# If you use a camera to "scan" the contact prints, you will need to use a 
+# different config file for images gathered in different sessions, unless you can 
+# get the tripod aligned exactly the same every time. 
+
+# boolean options enter 1 for yes/true and 0 for false/no
+
+# Tips:
+# Tune parameters roughly in order top to bottom. 
+
+# Set top and bottom cropping to leave a strip half as wide as the vertical space
+# between negative strips. This will keep images vertically centered in the slop window.
+
+# If you are going to include positive slop to the left and right, leave enough room to the
+# left of the leftmost image, and to the right of the rightmost image, to encompass
+# the slop. If you globally crop right to the edge of the left and right images, and 
+# then program in positive slop, the images toward the edges
+# will not be centered in the "slop window"
+
+# Try setting rows and columns both to "1" initially, to help when setting initial
+# cropping of the full sheet. 
+
+---
+# pre-crop operations
+pre_rotation: 0  # Slow, lossy. Scan straighter to avoid having to rotate. Degrees clockwise. 
+pre_scale: 100    # Applied to composite image before cropping. Percent. Thus 100 mean none
+monochrome: 1     # Color photography is never going to catch on anyway. Boolean.
+top_crop: 100       # in pixels
+left_crop: 1      # in pixels
+bottom_crop: 2    # in pixels
+right_crop: 2     # in pixels
+columns: 6        # in images
+rows: 6           # in images. if your images have inconsistent spacing, sorry.
+xslop: -50         # in pixels. The "+" and "-" symbols are mandatory! This is a string. 
+yslop: -150         # in pixels. The "+" and "-" symbols are mandatory! This is a string. 
+
+# post-crop operations done to individual images
+normalize: 1    # Stretch histogram after cropping. Typically good. Boolean.
+sharpen: 1      # unsharp mask. Boolean.
+annotate: 1     # imprint file, image number onto the image. Boolean.
+

@@ -51,12 +51,13 @@ $rows           = $config->{rows} // print "undefined option:rows\n";
 $right_crop     = $config->{right_crop} // print "undefined option:right_crop\n";
 $pre_scale      = $config->{pre_scale} // print "undefined option:pre_scale\n";
 $annotate       = $config->{annotate} // print "undefined option:annotate\n";
-$images_per_row = $config->{images_per_row} // print "undefined option:images_per_row\n";
+$columns        = $config->{columns} // print "undefined option:images_per_row\n";
 $normalize      = $config->{normalize} // print "undefined option:normalize\n";
 $monochrome     = $config->{monochrome} // print "undefined option:monochrome\n";
 $top_crop       = $config->{top_crop} // print "undefined option:top_crop\n";
 $sharpen        = $config->{sharpen} // print "undefined option:sharpen\n";
-$slop           = $config->{slop} // print "undefined option:slop\n";
+$xslop          = $config->{xslop} // print "undefined option:slop\n";
+$yslop          = $config->{yslop} // print "undefined option:slop\n";
 $bottom_crop    = $config->{bottom_crop} // print "undefined option:bottom_crop\n";
 $left_crop      = $config->{left_crop} // print "undefined option:left_crop\n";
 
@@ -64,6 +65,10 @@ splice(@ARGV,0,1); #shift config file name off
 
 foreach $infile (@ARGV){         # this does not handle filenames with spaces. 
     say "processing $infile";
+
+    $infile=~/(.*)\.[a-zA-Z]+$/ || die "basename";
+    $basename=$1;
+    say "basename: $basename";
 
     # identify infile. Example output of identify:
     # chaz1.jpg JPEG 209x256 209x256+0+0 8-bit PseudoClass 256c 30.6KB 0.000u 0:00.010
@@ -86,7 +91,9 @@ foreach $infile (@ARGV){         # this does not handle filenames with spaces.
     $x-=($left_crop+$right_crop);
     $y-=($top_crop+$bottom_crop);
     say "cropping to x=$x, y=$y with offsets $left_crop and $top_crop";
-    qx(mogrify -crop $x\x$y+$left_crop+$top_crop +repage $infile);
+    $command="mogrify -crop $x"."x$y+$left_crop+$top_crop +repage $infile";
+    say "command: $command";
+    qx($command);
 
     # multi-crop
 
@@ -95,13 +102,16 @@ foreach $infile (@ARGV){         # this does not handle filenames with spaces.
     #small images individually. Unsure which is better at this time.
 
     #mogrify allows this:
-    convert $infile +gravity -crop XxY $infile\_%d.jpg 
+    # convert $infile +gravity -crop XxY $infile\_%d.jpg 
     #requires calculating X and Y; will not evenly divide most of the time
 
-    # N by M images auto-crop. Is adaptive when not evenly divisible. 
-    convert rose: -crop NxM+20+20@  +repage  +adjoin  rose_2x2+20+20@_%d.gif
+    # N by M images auto-crop. Is adaptive when not evenly divisible. What's with the ":"?
     # the +20 is overlap.  Can by negative. I think this is what we want. 
-
+    $command=
+        "convert $infile -crop $columns" .
+        "x$rows"."$xslop"."$yslop"."@ +repage +adjoin $basename"."_%00d.gif";
+    say "command: $command";
+    system($command);
 }
 
 say "done. Check output.";
